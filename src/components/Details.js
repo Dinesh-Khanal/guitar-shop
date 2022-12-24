@@ -1,11 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ButtonContainer } from "./Button";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart } from "../redux/cartSlice";
 
 const Details = () => {
   const { detailProduct } = useSelector((state) => state.products);
-  const { id, company, img, info, price, title, inCart } = detailProduct;
+  const dispatch = useDispatch();
+  const { company, img, info, price, title, inCart } = detailProduct;
   return (
     <div className="container py-5">
       <div className="row">
@@ -51,10 +53,10 @@ const Details = () => {
           <ButtonContainer
             cart
             disabled={inCart ? true : false}
-            // onClick={() => {
-            //   value.addToCart(id);
-            //   value.openModal(id);
-            // }}
+            onClick={() => {
+              dispatch(addToCart(detailProduct));
+              //openModal(id);
+            }}
           >
             {inCart ? "inCart" : "Add to Cart"}
           </ButtonContainer>

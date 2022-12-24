@@ -60,3 +60,11 @@ nav {
 .cartBtn .btn {
   padding: 0.5rem;
 }
+.cartItm {
+  color: white;
+  background-color: red;
+  border-radius: 50%;
+  display: inline;
+  padding: 3px;
+  margin: 2px;
+}

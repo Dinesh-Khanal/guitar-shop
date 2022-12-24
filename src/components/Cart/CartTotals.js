@@ -8,7 +8,7 @@ const CartTotals = ({ items, history }) => {
   const dispatch = useDispatch();
   const cartSubTotal = items.reduce((a, c) => a + c.count * c.price, 0);
   const cartTax = (cartSubTotal * 0.1).toFixed(2);
-  const cartTotal = cartSubTotal + cartTax;
+  const cartTotal = Number(cartSubTotal) + Number(cartTax);
   return (
     <React.Fragment>
       <div className="container">
