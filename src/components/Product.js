@@ -29,7 +29,7 @@ const Product = ({ product }) => {
             disabled={inCart ? true : false}
             onClick={() => {
               dispatch(addToCart(product));
-              //value.openModal(id);
+              //openModal(id);
             }}
           >
             {inCart ? (

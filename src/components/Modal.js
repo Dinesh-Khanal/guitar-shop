@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { ProductContext } from "../context";
 import { ButtonContainer } from "./Button";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Modal = () => {
-  const value = useContext(ProductContext);
-  const { modalOpen, closeModal } = value;
-  const { img, title, price } = value.detailProduct;
-
+  const { detailProduct } = useSelector((state) => state.products);
+  const [modalOpen, setModalOpen] = useState(false);
+  const { img, title, price } = detailProduct;
+  const closeModal = () => {
+    setModalOpen(false);
+  };
   if (!modalOpen) return null;
   return (
     <ModalContainer>
