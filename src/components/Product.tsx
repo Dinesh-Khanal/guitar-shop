@@ -1,52 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { setDetail } from "../redux/productSlice";
-import { addToCart } from "../redux/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
 
-const Product = ({ product }) => {
-  const { id, title, img, price } = product;
-  const { items } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+interface IProps {
+  product: IProduct;
+}
+const Product = ({ product }: IProps) => {
   let inCart = false;
-  let item = items.find((itm) => itm.id === id);
-  if (item?.count > 0) {
-    inCart = true;
-  }
   return (
     <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
       <div className="card">
-        <div
-          className="img-container p-5"
-          onClick={() => dispatch(setDetail(id))}
-        >
+        <div className="img-container p-5">
           <Link to="/details">
-            <img src={img} alt="product" className="card-img-top" />
+            <img src={product.img} alt="product" className="card-img-top" />
           </Link>
-          <button
-            className="cart-btn"
-            disabled={inCart ? true : false}
-            onClick={() => {
-              dispatch(addToCart(product));
-              //openModal(id);
-            }}
-          >
+          <button className="cart-btn" disabled={inCart ? true : false}>
             {inCart ? (
-              <p className="text-capitalize" disabled>
-                In Cart
-              </p>
+              <p className="text-capitalize">In Cart</p>
             ) : (
               <i className="fas fa-cart-plus fa-lg" />
             )}
           </button>
         </div>
         <div className="card-footer d-flex justify-content-between">
-          <h3 className="align-self-center mb-0">{title}</h3>
-          <h3 className="text-blue font-italic mb-0">
+          <h5 className="align-self-center mb-0">{product.title}</h5>
+          <h5 className="text-blue font-italic mb-0">
             <span className="mr-1">$</span>
-            {price}
-          </h3>
+            {product.price}
+          </h5>
         </div>
       </div>
     </ProductWrapper>

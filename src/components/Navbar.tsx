@@ -2,10 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../phone.png";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const { items } = useSelector((state) => state.cart);
   return (
     <NavWrapper className="navbar navbar-expand-sm navbar-dark px-sm-5">
       <Link to="/">
@@ -29,7 +27,6 @@ const Navbar = () => {
           <button className="btn btn-light btn-lg">
             {" "}
             <span className="glyphicon glyphicon-shopping-cart"></span> My Cart
-            {items.length > 0 && <div className="cartItm">{items.length}</div>}
           </button>
         </Link>
       </div>

@@ -1,7 +1,8 @@
-import React from "react";
-
-//Note: Here, 'name' and 'title' are props from the '''<Title name="our" title="products" />''' of ProductList.js
-export default function Title({ name, title }) {
+interface IProps {
+  name: string;
+  title: string;
+}
+export default function Title({ name, title }: IProps) {
   return (
     <div className="row">
       <div className="col-10 mx-auto text-center text-title">

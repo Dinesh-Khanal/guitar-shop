@@ -1,31 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, createContext } from "react";
 import { storeProducts, dtlProduct } from "./data";
 
-export const ProductContext = React.createContext();
+export const ProductContext = createContext<IProductContext | null>(null);
 
-const ProductProvider = (props) => {
-  const [products, setProducts] = useState(storeProducts);
-  const [detailProduct, setDetailProduct] = useState(dtlProduct);
-  const [cart, setCart] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalProduct] = useState(dtlProduct);
+interface IProps {
+  children: React.ReactNode;
+}
+const ProductProvider = ({ children }: IProps) => {
+  const [products, setProducts] = useState<IProduct[]>(storeProducts);
+  const [detailProduct, setDetailProduct] = useState<IProduct>(dtlProduct);
+  const [cart, setCart] = useState<IProduct[]>([]);
   const [cartSubTotal, setCartSubTotal] = useState(0);
   const [cartTax, setCartTax] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
 
-  const getItem = (id) => {
+  const getItem = (id: number) => {
     const product = products.find((item) => item.id === id);
     return product;
   };
 
-  const handleDetail = (id) => {
+  const handleDetail = (id: number) => {
     const product = getItem(id);
-    setDetailProduct(product);
+    if (product) {
+      setDetailProduct(product);
+    }
   };
 
-  const addToCart = (id) => {
+  const addToCart = (id: number) => {
     const tempProducts = [...products];
-    const index = tempProducts.indexOf(getItem(id));
+    const index = tempProducts.indexOf(getItem(id)!);
     const product = tempProducts[index];
     product.inCart = true;
     product.count = 1;
@@ -35,18 +38,13 @@ const ProductProvider = (props) => {
     setCart([...cart, product]);
   };
 
-  const openModal = (id) => {
-    setModalOpen(true);
-  };
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  const increment = (id) => {
+  const increment = (id: number) => {
     let tempCart = [...cart];
     const product = tempCart.find((item) => item.id === id);
-    product.count = product.count + 1;
-    product.total = product.count * product.price;
+    if (product?.count !== undefined) {
+      product.count += 1;
+      product.total = product.count * product.price;
+    }
     // same logic can be done as follow
     // const tempCart = cart.map((itm) =>
     //   itm.id === id
@@ -58,30 +56,31 @@ const ProductProvider = (props) => {
     addTotals();
   };
 
-  const decrement = (id) => {
+  const decrement = (id: number) => {
     let tempCart = [...cart];
     const selectedProduct = tempCart.find((item) => item.id === id);
-    const index = tempCart.indexOf(selectedProduct);
+    const index = tempCart.indexOf(selectedProduct!);
     const product = tempCart[index];
+    if (product.count !== undefined) {
+      product.count = product.count - 1;
 
-    product.count = product.count - 1;
-
-    if (product.count === 0) {
-      removeItem(id);
-    } else {
-      product.total = product.count * product.price;
-      setCart(tempCart);
-      addTotals();
+      if (product.count === 0) {
+        removeItem(id);
+      } else {
+        product.total = product.count * product.price;
+        setCart(tempCart);
+        addTotals();
+      }
     }
   };
 
-  const removeItem = (id) => {
+  const removeItem = (id: number) => {
     let tempProducts = [...products];
     let tempCart = [...cart];
 
     tempCart = tempCart.filter((item) => item.id !== id);
 
-    const index = tempProducts.indexOf(getItem(id));
+    const index = tempProducts.indexOf(getItem(id)!);
     let removedProduct = tempProducts[index];
     removedProduct.inCart = false;
     removedProduct.count = 0;
@@ -99,7 +98,7 @@ const ProductProvider = (props) => {
   const addTotals = () => {
     let subTotal = 0;
 
-    cart.map((item) => (subTotal += item.total));
+    cart.map((item) => (subTotal += item.total!));
     const tempTax = subTotal * 0.1;
     const tax = parseFloat(tempTax.toFixed(2));
     const total = subTotal + tax;
@@ -113,22 +112,18 @@ const ProductProvider = (props) => {
         products,
         detailProduct,
         cart,
-        modalOpen,
-        modalProduct,
         cartSubTotal,
         cartTax,
         cartTotal,
         handleDetail,
         addToCart,
-        openModal,
-        closeModal,
         increment,
         decrement,
         removeItem,
         clearCart,
       }}
     >
-      {props.children}
+      {children}
     </ProductContext.Provider>
   );
 };

@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&display=swap");
 :root {
   --mainBlue: #2a2a72;
   /* -- is used for custom properties. It is used with var() */
@@ -11,7 +12,6 @@ body {
   font-family: "Oswald", sans-serif !important;
   background: var(--mainWhite) !important;
   color: var(--mainDark) !important;
-  /* color: #135547 */
 }
 
 .text-title {
@@ -29,8 +29,6 @@ body {
 }
 
 nav {
-  /* background-color: #35c8ad; */
-  /* background-color: #c25508; */
   background-color: #14899b;
   /* color: #f76008; */
 }
