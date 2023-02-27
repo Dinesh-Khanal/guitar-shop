@@ -4,13 +4,17 @@ import { Link } from "react-router-dom";
 
 interface IProps {
   product: IProduct;
+  handleDetail: (id: number) => void;
 }
-const Product = ({ product }: IProps) => {
+const Product = ({ product, handleDetail }: IProps) => {
   let inCart = false;
   return (
     <ProductWrapper className="col-9 mx-auto col-md-6 col-lg-3 my-3">
       <div className="card">
-        <div className="img-container p-5">
+        <div
+          className="img-container p-5"
+          onClick={() => handleDetail(product.id)}
+        >
           <Link to="/details">
             <img src={product.img} alt="product" className="card-img-top" />
           </Link>
